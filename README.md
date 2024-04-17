@@ -4,24 +4,23 @@
 
    ```sql
    CREATE TABLE departamento(
-       codigo INT(10) NOT NULL AUTO_INCREMENT,
+       codigo INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
        nombre VARCHAR(100) NOT NULL,
        presupuesto DOUBLE NOT NULL,
        gastos DOUBLE NOT NULL
    );
    
    CREATE TABLE empleado (
-       codigo INT(10) NOT NULL AUTO_INCREMENT,
+       codigo INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
        nif VARCHAR(9) NOT NULL,
        nombre VARCHAR(100) NOT NULL,
        apellido1 VARCHAR(100) NOT NULL,
        apellido2 VARCHAR(100),
        codigo_departamento INT(10),
-       PRIMARY KEY (codigo),
-       CONSTRAINT codigoDepartamento FOREIGN KEY (codigo_departamento) REFERENCES departamento(codigo)
+       FOREIGN KEY (codigo_departamento) REFERENCES departamento(codigo)
    );
    ```
-
+   
 2. **Inserción de datos**
 
 ```sql
@@ -59,6 +58,24 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
       ```sql
       SELECT apellido1
       FROM empleado;
+      
+      +-----------+
+      | apellido1 |
+      +-----------+
+      | Rivero    |
+      | Salas     |
+      | Rubio     |
+      | Suárez    |
+      | Loyola    |
+      | Santana   |
+      | Ruiz      |
+      | Ruiz      |
+      | Gómez     |
+      | Flores    |
+      | Herrera   |
+      | Salas     |
+      | Sáez      |
+      +-----------+
       ```
 
       
@@ -68,6 +85,22 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
       ```sql
       SELECT DISTINCT apellido1
       FROM empleado;
+      
+      +-----------+
+      | apellido1 |
+      +-----------+
+      | Rivero    |
+      | Salas     |
+      | Rubio     |
+      | Suárez    |
+      | Loyola    |
+      | Santana   |
+      | Ruiz      |
+      | Gómez     |
+      | Flores    |
+      | Herrera   |
+      | Sáez      |
+      +-----------+
       ```
 
       
@@ -77,6 +110,24 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
       ```sql
       SELECT codigo, nif, nombre, apellido1, apellido2, codigo_departamento
       FROM empleado;
+      
+      +--------+-----------+--------------+-----------+-----------+---------------------+
+      | codigo | nif       | nombre       | apellido1 | apellido2 | codigo_departamento |
+      +--------+-----------+--------------+-----------+-----------+---------------------+
+      |      1 | 32481596F | Aarón        | Rivero    | Gómez     |                   1 |
+      |      2 | Y5575632D | Adela        | Salas     | Díaz      |                   2 |
+      |      3 | R6970642B | Adolfo       | Rubio     | Flores    |                   3 |
+      |      4 | 77705545E | Adrián       | Suárez    | NULL      |                   4 |
+      |      5 | 17087203C | Marcos       | Loyola    | Méndez    |                   5 |
+      |      6 | 38382980M | María        | Santana   | Moreno    |                   1 |
+      |      7 | 80576669X | Pilar        | Ruiz      | NULL      |                   2 |
+      |      8 | 71651431Z | Pepe         | Ruiz      | Santana   |                   3 |
+      |      9 | 56399183D | Juan         | Gómez     | López     |                   2 |
+      |     10 | 46384486H | Diego        | Flores    | Salas     |                   5 |
+      |     11 | 67389283A | Marta        | Herrera   | Gil       |                   1 |
+      |     12 | 41234836R | Irene        | Salas     | Flores    |                NULL |
+      |     13 | 82635162B | Juan Antonio | Sáez      | Guerrero  |                NULL |
+      +--------+-----------+--------------+-----------+-----------+---------------------+
       ```
 
       
@@ -86,6 +137,24 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
       ```sql
       SELECT nombre, apellido1, apellido2
       FROM empleado;
+      
+      +--------------+-----------+-----------+
+      | nombre       | apellido1 | apellido2 |
+      +--------------+-----------+-----------+
+      | Aarón        | Rivero    | Gómez     |
+      | Adela        | Salas     | Díaz      |
+      | Adolfo       | Rubio     | Flores    |
+      | Adrián       | Suárez    | NULL      |
+      | Marcos       | Loyola    | Méndez    |
+      | María        | Santana   | Moreno    |
+      | Pilar        | Ruiz      | NULL      |
+      | Pepe         | Ruiz      | Santana   |
+      | Juan         | Gómez     | López     |
+      | Diego        | Flores    | Salas     |
+      | Marta        | Herrera   | Gil       |
+      | Irene        | Salas     | Flores    |
+      | Juan Antonio | Sáez      | Guerrero  |
+      +--------------+-----------+-----------+
       ```
 
       
@@ -95,6 +164,24 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
       ```sql
       SELECT codigo_departamento
       FROM empleado;
+      
+      +---------------------+
+      | codigo_departamento |
+      +---------------------+
+      |                NULL |
+      |                NULL |
+      |                   1 |
+      |                   1 |
+      |                   1 |
+      |                   2 |
+      |                   2 |
+      |                   2 |
+      |                   3 |
+      |                   3 |
+      |                   4 |
+      |                   5 |
+      |                   5 |
+      +---------------------+
       ```
 
       
@@ -104,6 +191,17 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
       ```sql
       SELECT DISTINCT codigo_departamento
       FROM empleado;
+      
+      +---------------------+
+      | codigo_departamento |
+      +---------------------+
+      |                NULL |
+      |                   1 |
+      |                   2 |
+      |                   3 |
+      |                   4 |
+      |                   5 |
+      +---------------------+
       ```
 
       
@@ -111,8 +209,26 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    7. Lista el nombre y apellidos de los empleados en una única columna.
 
       ```sql
-      SELECT CONCAT(nombre, '', apellido1, '', apellido2) AS nombre_completo
+      SELECT CONCAT(nombre, ' ', apellido1, ' ', COALESCE(apellido2, '')) AS nombre_completo
       FROM empleado;
+      
+      +-----------------------------+
+      | nombre_completo             |
+      +-----------------------------+
+      | Aarón Rivero Gómez          |
+      | Adela Salas Díaz            |
+      | Adolfo Rubio Flores         |
+      | Adrián Suárez               |
+      | Marcos Loyola Méndez        |
+      | María Santana Moreno        |
+      | Pilar Ruiz                  |
+      | Pepe Ruiz Santana           |
+      | Juan Gómez López            |
+      | Diego Flores Salas          |
+      | Marta Herrera Gil           |
+      | Irene Salas Flores          |
+      | Juan Antonio Sáez Guerrero  |
+      +-----------------------------+
       ```
 
       
@@ -120,8 +236,26 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    8. Lista el nombre y apellidos de los empleados en una única columna, convirtiendo todos los caracteres en mayúscula.
 
       ```sql
-      SELECT CONCAT(UPPER(nombre), '', UPPER(apellido1), '', UPPER(apellido2)) AS nombre_completo
+      SELECT CONCAT(UPPER(nombre), ' ', UPPER(apellido1), ' ', UPPER(COALESCE(apellido2, ''))) AS nombre_completo
       FROM empleado;
+      
+      +-----------------------------+
+      | nombre_completo             |
+      +-----------------------------+
+      | AARÓN RIVERO GÓMEZ          |
+      | ADELA SALAS DÍAZ            |
+      | ADOLFO RUBIO FLORES         |
+      | ADRIÁN SUÁREZ               |
+      | MARCOS LOYOLA MÉNDEZ        |
+      | MARÍA SANTANA MORENO        |
+      | PILAR RUIZ                  |
+      | PEPE RUIZ SANTANA           |
+      | JUAN GÓMEZ LÓPEZ            |
+      | DIEGO FLORES SALAS          |
+      | MARTA HERRERA GIL           |
+      | IRENE SALAS FLORES          |
+      | JUAN ANTONIO SÁEZ GUERRERO  |
+      +-----------------------------+
       ```
 
       
@@ -129,8 +263,26 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    9. Lista el nombre y apellidos de los empleados en una única columna, convirtiendo todos los caracteres en minúscula.
 
       ```sql
-      SELECT CONCAT(LOWER(nombre), '', LOWER(apellido1), '', LOWER(apellido2)) AS nombre_completo
+      SELECT CONCAT(LOWER(nombre), ' ', LOWER(apellido1), ' ', LOWER(COALESCE(apellido2, ''))) AS nombre_completo
       FROM empleado;
+      
+      +-----------------------------+
+      | nombre_completo             |
+      +-----------------------------+
+      | aarón rivero gómez          |
+      | adela salas díaz            |
+      | adolfo rubio flores         |
+      | adrián suárez               |
+      | marcos loyola méndez        |
+      | maría santana moreno        |
+      | pilar ruiz                  |
+      | pepe ruiz santana           |
+      | juan gómez lópez            |
+      | diego flores salas          |
+      | marta herrera gil           |
+      | irene salas flores          |
+      | juan antonio sáez guerrero  |
+      +-----------------------------+
       ```
 
       
@@ -148,6 +300,18 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        ```sql
        SELECT nombre, (presupuesto - gastos) AS presupuesto_actual
        FROM departamento;
+       
+       +------------------+--------------------+
+       | nombre           | presupuesto_actual |
+       +------------------+--------------------+
+       | Desarrollo       |             114000 |
+       | Sistemas         |             129000 |
+       | Recursos Humanos |             255000 |
+       | Contabilidad     |             107000 |
+       | I+D              |              -5000 |
+       | Proyectos        |                  0 |
+       | Publicidad       |              -1000 |
+       +------------------+--------------------+
        ```
 
        
@@ -155,9 +319,21 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    12. Lista el nombre de los departamentos y el valor del presupuesto actual ordenado de forma ascendente.
 
        ```sql
-       SELECT nombre, presupuesto
+       SELECT nombre, (presupuesto - gastos) AS presupuesto_actual
        FROM departamento
        ORDER BY nombre ASC, presupuesto ASC;
+       
+       +------------------+--------------------+
+       | nombre           | presupuesto_actual |
+       +------------------+--------------------+
+       | Contabilidad     |             107000 |
+       | Desarrollo       |             114000 |
+       | I+D              |              -5000 |
+       | Proyectos        |                  0 |
+       | Publicidad       |              -1000 |
+       | Recursos Humanos |             255000 |
+       | Sistemas         |             129000 |
+       +------------------+--------------------+
        ```
 
        
@@ -168,6 +344,18 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        SELECT nombre
        FROM departamento
        ORDER BY nombre ASC;
+       
+       +------------------+
+       | nombre           |
+       +------------------+
+       | Contabilidad     |
+       | Desarrollo       |
+       | I+D              |
+       | Proyectos        |
+       | Publicidad       |
+       | Recursos Humanos |
+       | Sistemas         |
+       +------------------+
        ```
 
        
@@ -178,6 +366,18 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        SELECT nombre
        FROM departamento
        ORDER BY nombre DESC;
+       
+       +------------------+
+       | nombre           |
+       +------------------+
+       | Sistemas         |
+       | Recursos Humanos |
+       | Publicidad       |
+       | Proyectos        |
+       | I+D              |
+       | Desarrollo       |
+       | Contabilidad     |
+       +------------------+
        ```
 
        
@@ -188,6 +388,24 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        SELECT apellido1, apellido2, nombre
        FROM empleado
        ORDER BY apellido1 ASC, apellido2 ASC, nombre ASC;
+       
+       +-----------+-----------+--------------+
+       | apellido1 | apellido2 | nombre       |
+       +-----------+-----------+--------------+
+       | Flores    | Salas     | Diego        |
+       | Gómez     | López     | Juan         |
+       | Herrera   | Gil       | Marta        |
+       | Loyola    | Méndez    | Marcos       |
+       | Rivero    | Gómez     | Aarón        |
+       | Rubio     | Flores    | Adolfo       |
+       | Ruiz      | NULL      | Pilar        |
+       | Ruiz      | Santana   | Pepe         |
+       | Sáez      | Guerrero  | Juan Antonio |
+       | Salas     | Díaz      | Adela        |
+       | Salas     | Flores    | Irene        |
+       | Santana   | Moreno    | María        |
+       | Suárez    | NULL      | Adrián       |
+       +-----------+-----------+--------------+
        ```
 
        
@@ -199,6 +417,14 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        FROM departamento
        ORDER BY presupuesto DESC
        LIMIT 3;
+       
+       +------------------+-------------+
+       | nombre           | presupuesto |
+       +------------------+-------------+
+       | I+D              |      375000 |
+       | Recursos Humanos |      280000 |
+       | Sistemas         |      150000 |
+       +------------------+-------------+
        ```
 
        
@@ -210,6 +436,14 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        FROM departamento
        ORDER BY presupuesto ASC
        LIMIT 3;
+       
+       +--------------+-------------+
+       | nombre       | presupuesto |
+       +--------------+-------------+
+       | Proyectos    |           0 |
+       | Publicidad   |           0 |
+       | Contabilidad |      110000 |
+       +--------------+-------------+
        ```
 
        
@@ -221,6 +455,13 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        FROM departamento
        ORDER BY gastos DESC
        LIMIT 2;
+       
+       +------------------+--------+
+       | nombre           | gastos |
+       +------------------+--------+
+       | I+D              | 380000 |
+       | Recursos Humanos |  25000 |
+       +------------------+--------+
        ```
 
        
@@ -232,6 +473,13 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        FROM departamento
        ORDER BY gastos ASC
        LIMIT 2;
+       
+       +------------+--------+
+       | nombre     | gastos |
+       +------------+--------+
+       | Proyectos  |      0 |
+       | Publicidad |   1000 |
+       +------------+--------+
        ```
 
        
@@ -250,6 +498,14 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        SELECT nombre, presupuesto
        FROM departamento
        WHERE presupuesto >= 150000;
+       
+       +------------------+-------------+
+       | nombre           | presupuesto |
+       +------------------+-------------+
+       | Sistemas         |      150000 |
+       | Recursos Humanos |      280000 |
+       | I+D              |      375000 |
+       +------------------+-------------+
        ```
 
        
@@ -260,6 +516,14 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        SELECT nombre, gastos
        FROM departamento
        WHERE gastos < 5000;
+       
+       +--------------+--------+
+       | nombre       | gastos |
+       +--------------+--------+
+       | Contabilidad |   3000 |
+       | Proyectos    |      0 |
+       | Publicidad   |   1000 |
+       +--------------+--------+
        ```
 
        
@@ -267,9 +531,17 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    23. Devuelve una lista con el nombre de los departamentos y el presupuesto, de aquellos que tienen  un presupuesto entre 100000 y 200000 euros. Sin utilizar el operador BETWEEN.
 
        ```sql
-       SELECT nombre
+       SELECT nombre, presupuesto
        FROM departamento
-       WHERE presupuesto >= 1000000 AND presupuesto <= 200000;
+       WHERE presupuesto >= 100000 AND presupuesto <= 200000;
+       
+       +--------------+-------------+
+       | nombre       | presupuesto |
+       +--------------+-------------+
+       | Desarrollo   |      120000 |
+       | Sistemas     |      150000 |
+       | Contabilidad |      110000 |
+       +--------------+-------------+
        ```
 
        
@@ -279,7 +551,16 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        ```sql
        SELECT nombre
        FROM departamento
-       WHERE presupuesto < 1000000 AND presupuesto > 200000;
+       WHERE presupuesto < 100000 OR presupuesto > 200000;
+       
+       +------------------+
+       | nombre           |
+       +------------------+
+       | Recursos Humanos |
+       | I+D              |
+       | Proyectos        |
+       | Publicidad       |
+       +------------------+
        ```
 
        
@@ -290,6 +571,14 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        SELECT nombre
        FROM departamento
        WHERE presupuesto BETWEEN 100000 AND 200000;
+       
+       +--------------+
+       | nombre       |
+       +--------------+
+       | Desarrollo   |
+       | Sistemas     |
+       | Contabilidad |
+       +--------------+
        ```
 
        
@@ -300,6 +589,15 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        SELECT nombre
        FROM departamento
        WHERE presupuesto NOT BETWEEN 100000 AND 200000;
+       
+       +------------------+
+       | nombre           |
+       +------------------+
+       | Recursos Humanos |
+       | I+D              |
+       | Proyectos        |
+       | Publicidad       |
+       +------------------+
        ```
 
        
@@ -310,6 +608,13 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        SELECT nombre, gastos, presupuesto
        FROM departamento
        WHERE gastos > presupuesto;
+       
+       +------------+--------+-------------+
+       | nombre     | gastos | presupuesto |
+       +------------+--------+-------------+
+       | I+D        | 380000 |      375000 |
+       | Publicidad |   1000 |           0 |
+       +------------+--------+-------------+
        ```
 
        
@@ -320,6 +625,15 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        SELECT nombre, gastos, presupuesto
        FROM departamento
        WHERE gastos < presupuesto;
+       
+       +------------------+--------+-------------+
+       | nombre           | gastos | presupuesto |
+       +------------------+--------+-------------+
+       | Desarrollo       |   6000 |      120000 |
+       | Sistemas         |  21000 |      150000 |
+       | Recursos Humanos |  25000 |      280000 |
+       | Contabilidad     |   3000 |      110000 |
+       +------------------+--------+-------------+
        ```
 
        
@@ -330,6 +644,12 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        SELECT nombre, gastos, presupuesto
        FROM departamento
        WHERE gastos = presupuesto;
+       
+       +-----------+--------+-------------+
+       | nombre    | gastos | presupuesto |
+       +-----------+--------+-------------+
+       | Proyectos |      0 |           0 |
+       +-----------+--------+-------------+
        ```
 
        
@@ -340,6 +660,13 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        SELECT codigo, nif, nombre, apellido1, apellido2, codigo_departamento
        FROM empleado
        WHERE apellido2 IS NULL;
+       
+       +--------+-----------+---------+-----------+-----------+---------------------+
+       | codigo | nif       | nombre  | apellido1 | apellido2 | codigo_departamento |
+       +--------+-----------+---------+-----------+-----------+---------------------+
+       |      4 | 77705545E | Adrián  | Suárez    | NULL      |                   4 |
+       |      7 | 80576669X | Pilar   | Ruiz      | NULL      |                   2 |
+       +--------+-----------+---------+-----------+-----------+---------------------+
        ```
 
        
@@ -350,6 +677,22 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        SELECT codigo, nif, nombre, apellido1, apellido2, codigo_departamento
        FROM empleado
        WHERE apellido2 IS NOT NULL;
+       
+       +--------+-----------+--------------+-----------+-----------+---------------------+
+       | codigo | nif       | nombre       | apellido1 | apellido2 | codigo_departamento |
+       +--------+-----------+--------------+-----------+-----------+---------------------+
+       |      1 | 32481596F | Aarón        | Rivero    | Gómez     |                   1 |
+       |      2 | Y5575632D | Adela        | Salas     | Díaz      |                   2 |
+       |      3 | R6970642B | Adolfo       | Rubio     | Flores    |                   3 |
+       |      5 | 17087203C | Marcos       | Loyola    | Méndez    |                   5 |
+       |      6 | 38382980M | María        | Santana   | Moreno    |                   1 |
+       |      8 | 71651431Z | Pepe         | Ruiz      | Santana   |                   3 |
+       |      9 | 56399183D | Juan         | Gómez     | López     |                   2 |
+       |     10 | 46384486H | Diego        | Flores    | Salas     |                   5 |
+       |     11 | 67389283A | Marta        | Herrera   | Gil       |                   1 |
+       |     12 | 41234836R | Irene        | Salas     | Flores    |                NULL |
+       |     13 | 82635162B | Juan Antonio | Sáez      | Guerrero  |                NULL |
+       +--------+-----------+--------------+-----------+-----------+---------------------+
        ```
 
        
@@ -360,6 +703,12 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        SELECT codigo, nif, nombre, apellido1, apellido2, codigo_departamento
        FROM empleado
        WHERE apellido2 = 'López';
+       
+       +--------+-----------+--------+-----------+-----------+---------------------+
+       | codigo | nif       | nombre | apellido1 | apellido2 | codigo_departamento |
+       +--------+-----------+--------+-----------+-----------+---------------------+
+       |      9 | 56399183D | Juan   | Gómez     | López     |                   2 |
+       +--------+-----------+--------+-----------+-----------+---------------------+
        ```
 
        
@@ -370,6 +719,13 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        SELECT codigo, nif, nombre, apellido1, apellido2, codigo_departamento
        FROM empleado
        WHERE apellido2 = 'Díaz' OR apellido2 = 'Moreno';
+       
+       +--------+-----------+--------+-----------+-----------+---------------------+
+       | codigo | nif       | nombre | apellido1 | apellido2 | codigo_departamento |
+       +--------+-----------+--------+-----------+-----------+---------------------+
+       |      2 | Y5575632D | Adela  | Salas     | Díaz      |                   2 |
+       |      6 | 38382980M | María  | Santana   | Moreno    |                   1 |
+       +--------+-----------+--------+-----------+-----------+---------------------+
        ```
 
        
@@ -380,6 +736,13 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        SELECT codigo, nif, nombre, apellido1, apellido2, codigo_departamento
        FROM empleado
        WHERE apellido2 IN ('Díaz', 'Moreno');
+       
+       +--------+-----------+--------+-----------+-----------+---------------------+
+       | codigo | nif       | nombre | apellido1 | apellido2 | codigo_departamento |
+       +--------+-----------+--------+-----------+-----------+---------------------+
+       |      2 | Y5575632D | Adela  | Salas     | Díaz      |                   2 |
+       |      6 | 38382980M | María  | Santana   | Moreno    |                   1 |
+       +--------+-----------+--------+-----------+-----------+---------------------+
        ```
 
        
@@ -390,6 +753,13 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        SELECT nombre, apellido1, apellido2, nif
        FROM empleado
        WHERE codigo_departamento = 3;
+       
+       +--------+-----------+-----------+-----------+
+       | nombre | apellido1 | apellido2 | nif       |
+       +--------+-----------+-----------+-----------+
+       | Adolfo | Rubio     | Flores    | R6970642B |
+       | Pepe   | Ruiz      | Santana   | 71651431Z |
+       +--------+-----------+-----------+-----------+
        ```
 
        
@@ -400,8 +770,19 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        SELECT nombre, apellido1, apellido2, nif
        FROM empleado
        WHERE codigo_departamento IN (2, 4, 5);
+       
+       +---------+-----------+-----------+-----------+
+       | nombre  | apellido1 | apellido2 | nif       |
+       +---------+-----------+-----------+-----------+
+       | Adela   | Salas     | Díaz      | Y5575632D |
+       | Pilar   | Ruiz      | NULL      | 80576669X |
+       | Juan    | Gómez     | López     | 56399183D |
+       | Adrián  | Suárez    | NULL      | 77705545E |
+       | Marcos  | Loyola    | Méndez    | 17087203C |
+       | Diego   | Flores    | Salas     | 46384486H |
+       +---------+-----------+-----------+-----------+
        ```
-
+       
        
 
 4. **Consultas multitabla** (Composición interna)
@@ -409,79 +790,200 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    1. Devuelve un listado con los empleados y los datos de los departamentos donde trabaja cada uno.
 
       ```sql
+      SELECT e.nombre, e.apellido1, e.apellido2, d.codigo AS codigo_departamento, d.nombre AS nombre_departamento, d.presupuesto, d.gastos
+      FROM empleado AS e, departamento AS d
+      WHERE e.codigo_departamento = d.codigo;
       
+      +---------+-----------+-----------+---------------------+---------------------+-------------+--------+
+      | nombre  | apellido1 | apellido2 | codigo_departamento | nombre_departamento | presupuesto | gastos |
+      +---------+-----------+-----------+---------------------+---------------------+-------------+--------+
+      | Aarón   | Rivero    | Gómez     |                   1 | Desarrollo          |      120000 |   6000 |
+      | María   | Santana   | Moreno    |                   1 | Desarrollo          |      120000 |   6000 |
+      | Marta   | Herrera   | Gil       |                   1 | Desarrollo          |      120000 |   6000 |
+      | Adela   | Salas     | Díaz      |                   2 | Sistemas            |      150000 |  21000 |
+      | Pilar   | Ruiz      | NULL      |                   2 | Sistemas            |      150000 |  21000 |
+      | Juan    | Gómez     | López     |                   2 | Sistemas            |      150000 |  21000 |
+      | Adolfo  | Rubio     | Flores    |                   3 | Recursos Humanos    |      280000 |  25000 |
+      | Pepe    | Ruiz      | Santana   |                   3 | Recursos Humanos    |      280000 |  25000 |
+      | Adrián  | Suárez    | NULL      |                   4 | Contabilidad        |      110000 |   3000 |
+      | Marcos  | Loyola    | Méndez    |                   5 | I+D                 |      375000 | 380000 |
+      | Diego   | Flores    | Salas     |                   5 | I+D                 |      375000 | 380000 |
+      +---------+-----------+-----------+---------------------+---------------------+-------------+--------+
       ```
 
       
 
    2. Devuelve un listado con los empleados y los datos de los departamentos donde trabaja cada uno. Ordena el resultado, en primer lugar por el nombre del departamento (en orden alfabético) y en segundo lugar por los apellidos y el nombre de los empleados.
-
+   
       ```sql
+      SELECT e.nombre, e.apellido1, e.apellido2, d.codigo AS codigo_departamento, d.nombre AS nombre_departamento, d.presupuesto, d.gastos
+      FROM empleado AS e, departamento AS d
+      WHERE e.codigo_departamento = d.codigo
+      ORDER BY d.nombre ASC, e.apellido1 ASC, e.apellido2 ASC, e.nombre ASC;
       
+      +---------+-----------+-----------+---------------------+---------------------+-------------+--------+
+      | nombre  | apellido1 | apellido2 | codigo_departamento | nombre_departamento | presupuesto | gastos |
+      +---------+-----------+-----------+---------------------+---------------------+-------------+--------+
+      | Adrián  | Suárez    | NULL      |                   4 | Contabilidad        |      110000 |   3000 |
+      | Marta   | Herrera   | Gil       |                   1 | Desarrollo          |      120000 |   6000 |
+      | Aarón   | Rivero    | Gómez     |                   1 | Desarrollo          |      120000 |   6000 |
+      | María   | Santana   | Moreno    |                   1 | Desarrollo          |      120000 |   6000 |
+      | Diego   | Flores    | Salas     |                   5 | I+D                 |      375000 | 380000 |
+      | Marcos  | Loyola    | Méndez    |                   5 | I+D                 |      375000 | 380000 |
+      | Adolfo  | Rubio     | Flores    |                   3 | Recursos Humanos    |      280000 |  25000 |
+      | Pepe    | Ruiz      | Santana   |                   3 | Recursos Humanos    |      280000 |  25000 |
+      | Juan    | Gómez     | López     |                   2 | Sistemas            |      150000 |  21000 |
+      | Pilar   | Ruiz      | NULL      |                   2 | Sistemas            |      150000 |  21000 |
+      | Adela   | Salas     | Díaz      |                   2 | Sistemas            |      150000 |  21000 |
+      +---------+-----------+-----------+---------------------+---------------------+-------------+--------+
       ```
-
+   
       
-
+   
    3. Devuelve un listado con el identificador y el nombre del departamento, solamente de aquellos departamentos que tienen empleados.
-
+   
       ```sql
+      SELECT DISTINCT(d.codigo), d.nombre
+      FROM departamento AS d, empleado AS e
+      WHERE d.codigo = e.codigo_departamento;
       
+      +--------+------------------+
+      | codigo | nombre           |
+      +--------+------------------+
+      |      1 | Desarrollo       |
+      |      2 | Sistemas         |
+      |      3 | Recursos Humanos |
+      |      4 | Contabilidad     |
+      |      5 | I+D              |
+      +--------+------------------+
       ```
-
+   
       
-
+   
    4. Devuelve un listado con el identificador, el nombre del departamento y el valor del presupuesto actual del que dispone, solamente de aquellos departamentos que tienen empleados. El valor del presupuesto actual lo puede calcular restando al valor del presupuesto inicial (columna presupuesto) el valor de los gastos que ha generado (columna gastos).
-
+   
       ```sql
+      SELECT DISTINCT(d.codigo), d.nombre, (d.presupuesto - d.gastos) AS presupuesto_actual
+      FROM departamento AS d, empleado AS e
+      WHERE d.codigo = e.codigo_departamento;
       
+      +--------+------------------+--------------------+
+      | codigo | nombre           | presupuesto_actual |
+      +--------+------------------+--------------------+
+      |      1 | Desarrollo       |             114000 |
+      |      2 | Sistemas         |             129000 |
+      |      3 | Recursos Humanos |             255000 |
+      |      4 | Contabilidad     |             107000 |
+      |      5 | I+D              |              -5000 |
+      +--------+------------------+--------------------+
       ```
-
+   
       
-
+   
    5. Devuelve el nombre del departamento donde trabaja el empleado que tiene el nif 38382980M.
-
+   
       ```sql
+      SELECT d.nombre
+      FROM departamento AS d, empleado AS e
+      WHERE d.codigo = e.codigo_departamento AND e.nif = '38382980M';
       
+      +------------+
+      | nombre     |
+      +------------+
+      | Desarrollo |
+      +------------+
       ```
-
+   
       
-
+   
    6. Devuelve el nombre del departamento donde trabaja el empleado Pepe Ruiz Santana.
-
+   
       ```sql
+      SELECT d.nombre
+      FROM departamento AS d, empleado AS e
+      WHERE d.codigo = e.codigo_departamento AND e.nombre = 'Pepe' AND e.apellido1 = 'Ruiz' AND e.apellido2 = 'Santana';
       
+      +------------------+
+      | nombre           |
+      +------------------+
+      | Recursos Humanos |
+      +------------------+
       ```
-
+   
       
-
+   
    7. Devuelve un listado con los datos de los empleados que trabajan en el departamento de I+D. Ordena el resultado alfabéticamente.
-
+   
       ```sql
+      SELECT e.codigo, e.nif, e.nombre, e.apellido1, e.apellido2, e.codigo_departamento
+      FROM empleado AS e, departamento AS d
+      WHERE d.codigo = e.codigo_departamento AND d.nombre = 'I+D'
+      ORDER BY e.nombre ASC;
       
+      +--------+-----------+--------+-----------+-----------+---------------------+
+      | codigo | nif       | nombre | apellido1 | apellido2 | codigo_departamento |
+      +--------+-----------+--------+-----------+-----------+---------------------+
+      |     10 | 46384486H | Diego  | Flores    | Salas     |                   5 |
+      |      5 | 17087203C | Marcos | Loyola    | Méndez    |                   5 |
+      +--------+-----------+--------+-----------+-----------+---------------------+
       ```
-
+   
       
-
+   
    8. Devuelve un listado con los datos de los empleados que trabajan en el departamento de Sistemas, Contabilidad o I+D. Ordena el resultado alfabéticamente.
-
+   
       ```sql
+      SELECT e.codigo, e.nif, e.nombre, e.apellido1, e.apellido2, e.codigo_departamento
+      FROM empleado AS e, departamento AS d
+      WHERE d.codigo = e.codigo_departamento AND d.nombre IN ('Sistemas', 'Contabilidad', 'I+D')
+      ORDER BY e.nombre ASC;
       
+      +--------+-----------+---------+-----------+-----------+---------------------+
+      | codigo | nif       | nombre  | apellido1 | apellido2 | codigo_departamento |
+      +--------+-----------+---------+-----------+-----------+---------------------+
+      |      2 | Y5575632D | Adela   | Salas     | Díaz      |                   2 |
+      |      4 | 77705545E | Adrián  | Suárez    | NULL      |                   4 |
+      |     10 | 46384486H | Diego   | Flores    | Salas     |                   5 |
+      |      9 | 56399183D | Juan    | Gómez     | López     |                   2 |
+      |      5 | 17087203C | Marcos  | Loyola    | Méndez    |                   5 |
+      |      7 | 80576669X | Pilar   | Ruiz      | NULL      |                   2 |
+      +--------+-----------+---------+-----------+-----------+---------------------+
       ```
-
+   
       
-
+   
    9. Devuelve una lista con el nombre de los empleados que tienen los departamentos que no tienen un presupuesto entre 100000 y 200000 euros.
-
+   
       ```sql
+      SELECT e.nombre, e.apellido1, e.apellido2
+      FROM empleado AS e, departamento AS d
+      WHERE d.codigo = e.codigo_departamento AND d.presupuesto NOT BETWEEN 100000 AND 200000;
       
+      +--------+-----------+-----------+
+      | nombre | apellido1 | apellido2 |
+      +--------+-----------+-----------+
+      | Adolfo | Rubio     | Flores    |
+      | Pepe   | Ruiz      | Santana   |
+      | Marcos | Loyola    | Méndez    |
+      | Diego  | Flores    | Salas     |
+      +--------+-----------+-----------+
       ```
-
+   
       
-
+   
    10. Devuelve un listado con el nombre de los departamentos donde existe algún empleado cuyo segundo apellido sea NULL. Tenga en cuenta que no debe mostrar nombres de departamentos que estén repetidos.
-
+   
        ```sql
+       SELECT DISTINCT(d.nombre)
+       FROM departamento AS d, empleado AS e
+       WHERE d.codigo = e.codigo_departamento AND e.apellido2 IS NULL;
        
+       +--------------+
+       | nombre       |
+       +--------------+
+       | Contabilidad |
+       | Sistemas     |
+       +--------------+
        ```
-
+       
        
