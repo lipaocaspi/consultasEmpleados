@@ -290,7 +290,26 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 10. Lista el identificador de los empleados junto al nif, pero el nif deberá aparecer en dos columnas, una mostrará únicamente los dígitos del nif y la otra la letra.
 
     ```sql
+    SELECT codigo, SUBSTRING(nif, 1, LENGTH(nif) - 1) AS digitos_nif, RIGHT(nif, 1) AS letra_nif
+    FROM empleado;
     
+    +--------+-------------+-----------+
+    | codigo | digitos_nif | letra_nif |
+    +--------+-------------+-----------+
+    |      1 | 32481596    | F         |
+    |      2 | Y5575632    | D         |
+    |      3 | R6970642    | B         |
+    |      4 | 77705545    | E         |
+    |      5 | 17087203    | C         |
+    |      6 | 38382980    | M         |
+    |      7 | 80576669    | X         |
+    |      8 | 71651431    | Z         |
+    |      9 | 56399183    | D         |
+    |     10 | 46384486    | H         |
+    |     11 | 67389283    | A         |
+    |     12 | 41234836    | R         |
+    |     13 | 82635162    | B         |
+    +--------+-------------+-----------+
     ```
 
     
@@ -487,7 +506,20 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 20. Devuelve una lista con 5 filas a partir de la tercera fila de la tabla empleado. La tercera fila se debe incluir en la respuesta. La respuesta debe incluir todas las columnas de la tabla *empleado*.
 
     ```sql
+    SELECT codigo, nif, nombre, apellido1, apellido2, codigo_departamento
+    FROM empleado
+    LIMIT 5 
+    OFFSET 2;
     
+    +--------+-----------+--------+-----------+-----------+---------------------+
+    | codigo | nif       | nombre | apellido1 | apellido2 | codigo_departamento |
+    +--------+-----------+--------+-----------+-----------+---------------------+
+    |      3 | R6970642B | Adolfo | Rubio     | Flores    |                   3 |
+    |      4 | 77705545E | Adrián | Suárez    | NULL      |                   4 |
+    |      5 | 17087203C | Marcos | Loyola    | Méndez    |                   5 |
+    |      6 | 38382980M | María  | Santana   | Moreno    |                   1 |
+    |      7 | 80576669X | Pilar  | Ruiz      | NULL      |                   2 |
+    +--------+-----------+--------+-----------+-----------+---------------------+
     ```
 
     
@@ -1137,6 +1169,8 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    +------------------+
    ```
 
+   
+
 2. Calcula la media del presupuesto de todos los departamentos.
 
    ```sql
@@ -1150,6 +1184,8 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    +--------------------+
    ```
 
+   
+
 3. Calcula el valor mínimo del presupuesto de todos los departamentos.
 
    ```sql
@@ -1162,6 +1198,8 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    |                0 |
    +------------------+
    ```
+
+   
 
 4. Calcula el nombre del departamento y el presupuesto que tiene asignado, del departamento con menor presupuesto.
 
@@ -1178,6 +1216,8 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    +-----------+-------------+
    ```
 
+   
+
 5. Calcula el valor máximo del presupuesto de todos los departamentos.
 
    ```sql
@@ -1190,6 +1230,8 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    |           375000 |
    +------------------+
    ```
+
+   
 
 6. Calcula el nombre del departamento y el presupuesto que tiene asignado, del departamento con mayor presupuesto.
 
@@ -1206,6 +1248,8 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    +--------+-------------+
    ```
 
+   
+
 7. Calcula el número total de empleados que hay en la tabla empleado.
 
    ```sql
@@ -1218,7 +1262,9 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    |            13 |
    +---------------+
    ```
+
    
+
 8. Calcula el número de empleados que no tienen NULL en su segundo apellido.
 
    ```sql
@@ -1232,7 +1278,9 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    |            11 |
    +---------------+
    ```
+
    
+
 9. Calcula el número de empleados que hay en cada departamento. Tienes que devolver dos columnas, una con el nombre del departamento y otra con el número de empleados que tiene asignados.
 
    ```sql
@@ -1251,7 +1299,9 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    | I+D              |                   2 |
    +------------------+---------------------+
    ```
+
    
+
 10. Calcula el nombre de los departamentos que tienen más de 2 empleados. El resultado debe tener dos columnas, una con el nombre del departamento y otra con el número de empleados que tiene asignados.
 
     ```sql
@@ -1269,7 +1319,9 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
     | Sistemas   |                   3 |
     +------------+---------------------+
     ```
+
     
+
 11. Calcula el número de empleados que trabajan en cada uno de los departamentos. El resultado de esta consulta también tiene que incluir aquellos departamentos que no tienen ningún empleado asociado.
 
     ```sql
@@ -1291,7 +1343,9 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
     | Publicidad       |                   0 |
     +------------------+---------------------+
     ```
+
     
+
 12. Calcula el número de empleados que trabajan en cada unos de los departamentos que tienen un presupuesto mayor a 200000 euros.
 
     ```sql
@@ -1307,5 +1361,5 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
     | I+D              |                   2 |
     +------------------+---------------------+
     ```
-    
+
     
