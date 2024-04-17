@@ -986,4 +986,137 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        +--------------+
        ```
        
-       
+   
+5. **Consultas multitabla** (Composición externa)
+
+   1. Devuelve un listado con todos los empleados junto con los datos de los departamentos donde trabajan. Este listado también debe incluir los empleados que no tienen ningún departamento asociado.
+
+      ```sql
+      SELECT e.codigo, e.nif, e.nombre, e.apellido1, e.apellido2, d.codigo AS codigo_departamento, d.nombre AS nombre_departamento, d.presupuesto, d.gastos
+      FROM empleado AS e
+      LEFT JOIN departamento AS d
+      ON d.codigo = e.codigo_departamento;
+      
+      +--------+-----------+--------------+-----------+-----------+---------------------+---------------------+-------------+--------+
+      | codigo | nif       | nombre       | apellido1 | apellido2 | codigo_departamento | nombre_departamento | presupuesto | gastos |
+      +--------+-----------+--------------+-----------+-----------+---------------------+---------------------+-------------+--------+
+      |      1 | 32481596F | Aarón        | Rivero    | Gómez     |                   1 | Desarrollo          |      120000 |   6000 |
+      |      2 | Y5575632D | Adela        | Salas     | Díaz      |                   2 | Sistemas            |      150000 |  21000 |
+      |      3 | R6970642B | Adolfo       | Rubio     | Flores    |                   3 | Recursos Humanos    |      280000 |  25000 |
+      |      4 | 77705545E | Adrián       | Suárez    | NULL      |                   4 | Contabilidad        |      110000 |   3000 |
+      |      5 | 17087203C | Marcos       | Loyola    | Méndez    |                   5 | I+D                 |      375000 | 380000 |
+      |      6 | 38382980M | María        | Santana   | Moreno    |                   1 | Desarrollo          |      120000 |   6000 |
+      |      7 | 80576669X | Pilar        | Ruiz      | NULL      |                   2 | Sistemas            |      150000 |  21000 |
+      |      8 | 71651431Z | Pepe         | Ruiz      | Santana   |                   3 | Recursos Humanos    |      280000 |  25000 |
+      |      9 | 56399183D | Juan         | Gómez     | López     |                   2 | Sistemas            |      150000 |  21000 |
+      |     10 | 46384486H | Diego        | Flores    | Salas     |                   5 | I+D                 |      375000 | 380000 |
+      |     11 | 67389283A | Marta        | Herrera   | Gil       |                   1 | Desarrollo          |      120000 |   6000 |
+      |     12 | 41234836R | Irene        | Salas     | Flores    |                NULL | NULL                |        NULL |   NULL |
+      |     13 | 82635162B | Juan Antonio | Sáez      | Guerrero  |                NULL | NULL                |        NULL |   NULL |
+      +--------+-----------+--------------+-----------+-----------+---------------------+---------------------+-------------+--------+
+      ```
+
+      
+
+   2. Devuelve un listado donde sólo aparezcan aquellos empleados que no tienen ningún departamento asociado.
+
+      ```sql
+      SELECT e.codigo, e.nif, e.nombre, e.apellido1, e.apellido2
+      FROM empleado AS e
+      LEFT JOIN departamento AS d
+      ON e.codigo_departamento = d.codigo
+      WHERE e.codigo_departamento IS NULL;
+      
+      +--------+-----------+--------------+-----------+-----------+
+      | codigo | nif       | nombre       | apellido1 | apellido2 |
+      +--------+-----------+--------------+-----------+-----------+
+      |     12 | 41234836R | Irene        | Salas     | Flores    |
+      |     13 | 82635162B | Juan Antonio | Sáez      | Guerrero  |
+      +--------+-----------+--------------+-----------+-----------+
+      ```
+
+      
+
+   3. Devuelve un listado donde sólo aparezcan aquellos departamentos que no tienen ningún empleado asociado.
+
+      ```sql
+      SELECT d.nombre
+      FROM empleado AS e
+      RIGHT JOIN departamento AS d
+      ON e.codigo_departamento = d.codigo
+      WHERE e.codigo_departamento IS NULL;
+      
+      +------------+
+      | nombre     |
+      +------------+
+      | Proyectos  |
+      | Publicidad |
+      +------------+
+      ```
+
+      
+
+   4. Devuelve un listado con todos los empleados junto con los datos de los departamentos donde trabajan. El listado debe incluir los empleados que no tienen ningún departamento asociado y los departamentos que no tienen ningún empleado asociado. Ordene el listado alfabéticamente por el nombre del departamento.
+
+      ```sql
+      SELECT e.codigo, e.nif, e.nombre, e.apellido1, e.apellido2, d.codigo AS codigo_departamento, d.nombre AS nombre_departamento, d.presupuesto, d.gastos
+      FROM empleado AS e
+      LEFT JOIN departamento AS d
+      ON e.codigo_departamento = d.codigo
+      UNION
+      SELECT e.codigo, e.nif, e.nombre, e.apellido1, e.apellido2, d.codigo AS codigo_departamento, d.nombre AS nombre_departamento, d.presupuesto, d.gastos
+      FROM empleado AS e
+      RIGHT JOIN departamento AS d
+      ON e.codigo_departamento = d.codigo
+      ORDER BY nombre_departamento ASC;
+      
+      +--------+-----------+--------------+-----------+-----------+---------------------+---------------------+-------------+--------+
+      | codigo | nif       | nombre       | apellido1 | apellido2 | codigo_departamento | nombre_departamento | presupuesto | gastos |
+      +--------+-----------+--------------+-----------+-----------+---------------------+---------------------+-------------+--------+
+      |     12 | 41234836R | Irene        | Salas     | Flores    |                NULL | NULL                |        NULL |   NULL |
+      |     13 | 82635162B | Juan Antonio | Sáez      | Guerrero  |                NULL | NULL                |        NULL |   NULL |
+      |      4 | 77705545E | Adrián       | Suárez    | NULL      |                   4 | Contabilidad        |      110000 |   3000 |
+      |      1 | 32481596F | Aarón        | Rivero    | Gómez     |                   1 | Desarrollo          |      120000 |   6000 |
+      |      6 | 38382980M | María        | Santana   | Moreno    |                   1 | Desarrollo          |      120000 |   6000 |
+      |     11 | 67389283A | Marta        | Herrera   | Gil       |                   1 | Desarrollo          |      120000 |   6000 |
+      |      5 | 17087203C | Marcos       | Loyola    | Méndez    |                   5 | I+D                 |      375000 | 380000 |
+      |     10 | 46384486H | Diego        | Flores    | Salas     |                   5 | I+D                 |      375000 | 380000 |
+      |   NULL | NULL      | NULL         | NULL      | NULL      |                   6 | Proyectos           |           0 |      0 |
+      |   NULL | NULL      | NULL         | NULL      | NULL      |                   7 | Publicidad          |           0 |   1000 |
+      |      3 | R6970642B | Adolfo       | Rubio     | Flores    |                   3 | Recursos Humanos    |      280000 |  25000 |
+      |      8 | 71651431Z | Pepe         | Ruiz      | Santana   |                   3 | Recursos Humanos    |      280000 |  25000 |
+      |      2 | Y5575632D | Adela        | Salas     | Díaz      |                   2 | Sistemas            |      150000 |  21000 |
+      |      7 | 80576669X | Pilar        | Ruiz      | NULL      |                   2 | Sistemas            |      150000 |  21000 |
+      |      9 | 56399183D | Juan         | Gómez     | López     |                   2 | Sistemas            |      150000 |  21000 |
+      +--------+-----------+--------------+-----------+-----------+---------------------+---------------------+-------------+--------+
+      ```
+
+      
+
+   5. Devuelve un listado con los empleados que no tienen ningún departamento asociado y los departamentos que no tienen ningún empleado asociado. Ordene el listado alfabéticamente por el nombre del departamento.
+
+      ```sql
+      SELECT e.codigo, e.nif, e.nombre, e.apellido1, e.apellido2, d.codigo AS codigo_departamento, d.nombre AS nombre_departamento, d.presupuesto, d.gastos
+      FROM empleado AS e
+      LEFT JOIN departamento AS d
+      ON e.codigo_departamento = d.codigo
+      WHERE e.codigo_departamento IS NULL
+      UNION
+      SELECT e.codigo, e.nif, e.nombre, e.apellido1, e.apellido2, d.codigo AS codigo_departamento, d.nombre AS nombre_departamento, d.presupuesto, d.gastos
+      FROM empleado AS e
+      RIGHT JOIN departamento AS d
+      ON e.codigo_departamento = d.codigo
+      WHERE e.codigo_departamento IS NULL
+      ORDER BY nombre_departamento ASC;
+      
+      +--------+-----------+--------------+-----------+-----------+---------------------+---------------------+-------------+--------+
+      | codigo | nif       | nombre       | apellido1 | apellido2 | codigo_departamento | nombre_departamento | presupuesto | gastos |
+      +--------+-----------+--------------+-----------+-----------+---------------------+---------------------+-------------+--------+
+      |     12 | 41234836R | Irene        | Salas     | Flores    |                NULL | NULL                |        NULL |   NULL |
+      |     13 | 82635162B | Juan Antonio | Sáez      | Guerrero  |                NULL | NULL                |        NULL |   NULL |
+      |   NULL | NULL      | NULL         | NULL      | NULL      |                   6 | Proyectos           |           0 |      0 |
+      |   NULL | NULL      | NULL         | NULL      | NULL      |                   7 | Publicidad          |           0 |   1000 |
+      +--------+-----------+--------------+-----------+-----------+---------------------+---------------------+-------------+--------+
+      ```
+
+      
