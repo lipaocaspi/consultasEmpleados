@@ -986,6 +986,7 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
        +--------------+
        ```
        
+       
    
 5. **Consultas multitabla** (Composición externa)
 
@@ -1120,3 +1121,136 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
       ```
 
       
+
+   6. **Consultas resumen**
+
+      1. Calcula la suma del presupuesto de todos los departamentos.
+
+         ```sql
+         SELECT SUM(presupuesto)
+         FROM departamento;
+         
+         +------------------+
+         | SUM(presupuesto) |
+         +------------------+
+         |          1035000 |
+         +------------------+
+         ```
+
+         
+      2. Calcula la media del presupuesto de todos los departamentos.
+
+         ```sql
+         SELECT AVG(presupuesto)
+         FROM departamento;
+         
+         +--------------------+
+         | AVG(presupuesto)   |
+         +--------------------+
+         | 147857.14285714287 |
+         +--------------------+
+         ```
+
+         
+      3. Calcula el valor mínimo del presupuesto de todos los departamentos.
+
+         ```sql
+         SELECT MIN(presupuesto)
+         FROM departamento;
+         
+         +------------------+
+         | MIN(presupuesto) |
+         +------------------+
+         |                0 |
+         +------------------+
+         ```
+
+         
+      4. Calcula el nombre del departamento y el presupuesto que tiene asignado, del departamento con menor presupuesto.
+
+         ```sql
+         SELECT nombre, presupuesto
+         FROM departamento
+         ORDER BY presupuesto ASC
+         LIMIT 1;
+         
+         +-----------+-------------+
+         | nombre    | presupuesto |
+         +-----------+-------------+
+         | Proyectos |           0 |
+         +-----------+-------------+
+         ```
+
+         
+      5. Calcula el valor máximo del presupuesto de todos los departamentos.
+
+         ```sql
+         SELECT MAX(presupuesto)
+         FROM departamento;
+         
+         +------------------+
+         | MAX(presupuesto) |
+         +------------------+
+         |           375000 |
+         +------------------+
+         ```
+
+         
+      6. Calcula el nombre del departamento y el presupuesto que tiene asignado, del departamento con mayor presupuesto.
+
+         ```sql
+         SELECT nombre, presupuesto
+         FROM departamento
+         ORDER BY presupuesto DESC
+         LIMIT 1;
+         
+         +--------+-------------+
+         | nombre | presupuesto |
+         +--------+-------------+
+         | I+D    |      375000 |
+         +--------+-------------+
+         ```
+
+         
+      7. Calcula el número total de empleados que hay en la tabla empleado.
+
+         ```sql
+         
+         ```
+
+         
+      8. Calcula el número de empleados que no tienen NULL en su segundo apellido.
+
+         ```sql
+         
+         ```
+
+         
+      9. Calcula el número de empleados que hay en cada departamento. Tienes que devolver dos columnas, una con el nombre del departamento y otra con el número de empleados que tiene asignados.
+
+         ```sql
+         
+         ```
+
+         
+      10. Calcula el nombre de los departamentos que tienen más de 2 empleados. El resultado debe tener dos columnas, una con el nombre del departamento y otra con el número de empleados que tiene asignados.
+
+          ```sql
+          
+          ```
+
+          
+      11. Calcula el número de empleados que trabajan en cada uno de los departamentos. El resultado de esta consulta también tiene que incluir aquellos departamentos que no tienen ningún empleado asociado.
+
+          ```sql
+          
+          ```
+
+          
+      12. Calcula el número de empleados que trabajan en cada unos de los departamentos que tienen un presupuesto mayor a 200000 euros.
+
+          ```sql
+          
+          ```
+
+          
