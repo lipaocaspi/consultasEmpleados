@@ -3,6 +3,9 @@
 ##### **Creación de tablas**
 
 ```sql
+CREATE DATABASE empresa;
+USE empresa;
+
 CREATE TABLE departamento(
     codigo INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(100) NOT NULL,
