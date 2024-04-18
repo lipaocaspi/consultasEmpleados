@@ -1374,7 +1374,7 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    SELECT nombre, apellido1, apellido2 
    FROM empleado
    WHERE codigo_departamento = (
-   	SELECT codigo 
+       SELECT codigo 
        FROM departamento
        WHERE nombre = 'Sistemas'
    );
@@ -1396,7 +1396,7 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    SELECT nombre, presupuesto 
    FROM departamento
    WHERE presupuesto = (
-   	SELECT MAX(presupuesto) 
+       SELECT MAX(presupuesto) 
        FROM departamento
    );
    
@@ -1415,7 +1415,7 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    SELECT d1.nombre, d1.presupuesto 
    FROM departamento AS d1
    WHERE presupuesto < ALL(
-   	SELECT d2.presupuesto 
+       SELECT d2.presupuesto 
        FROM departamento AS d2
        WHERE d1.presupuesto <> d2.presupuesto
    );
@@ -1438,7 +1438,7 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    SELECT d1.nombre, d1.presupuesto 
    FROM departamento AS d1
    WHERE presupuesto > ALL(
-   	SELECT d2.presupuesto 
+       SELECT d2.presupuesto 
        FROM departamento AS d2
        WHERE d1.presupuesto <> d2.presupuesto
    );
@@ -1458,7 +1458,7 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    SELECT d1.nombre, d1.presupuesto 
    FROM departamento AS d1
    WHERE presupuesto < ALL(
-   	SELECT d2.presupuesto 
+       SELECT d2.presupuesto 
        FROM departamento AS d2
        WHERE d1.presupuesto <> d2.presupuesto
    );
@@ -1479,7 +1479,7 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    SELECT nombre 
    FROM departamento
    WHERE codigo = ANY (
-   	SELECT codigo_departamento 
+       SELECT codigo_departamento 
        FROM empleado
    );
    
@@ -1502,7 +1502,7 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    SELECT nombre 
    FROM departamento
    WHERE codigo <> ALL (
-   	SELECT codigo_departamento 
+       SELECT codigo_departamento 
        FROM empleado
        WHERE codigo_departamento IS NOT NULL
    );
@@ -1525,7 +1525,7 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    SELECT nombre 
    FROM departamento
    WHERE codigo IN (
-   	SELECT codigo_departamento 
+       SELECT codigo_departamento 
        FROM empleado
    );
    
@@ -1548,7 +1548,7 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
    SELECT nombre 
    FROM departamento
    WHERE codigo NOT IN (
-   	SELECT codigo_departamento 
+       SELECT codigo_departamento 
        FROM empleado
        WHERE codigo_departamento IS NOT NULL 
    );
@@ -1571,7 +1571,7 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
     SELECT nombre 
     FROM departamento AS d
     WHERE EXISTS (
-    	SELECT d.nombre 
+        SELECT d.nombre 
         FROM empleado AS e
         WHERE e.codigo_departamento = d.codigo
     );
@@ -1595,7 +1595,7 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
     SELECT nombre 
     FROM departamento AS d
     WHERE NOT EXISTS (
-    	SELECT d.nombre 
+        SELECT d.nombre 
         FROM empleado AS e
         WHERE e.codigo_departamento = d.codigo
     );
