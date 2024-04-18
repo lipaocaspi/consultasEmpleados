@@ -1371,7 +1371,21 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 1. Devuelve un listado con todos los empleados que tiene el departamento de Sistemas. (Sin utilizar INNER JOIN).
 
    ```sql
+   SELECT nombre, apellido1, apellido2 
+   FROM empleado
+   WHERE codigo_departamento = (
+   	SELECT codigo 
+       FROM departamento
+       WHERE nombre = 'Sistemas'
+   );
    
+   +--------+-----------+-----------+
+   | nombre | apellido1 | apellido2 |
+   +--------+-----------+-----------+
+   | Adela  | Salas     | Díaz      |
+   | Pilar  | Ruiz      | NULL      |
+   | Juan   | Gómez     | López     |
+   +--------+-----------+-----------+
    ```
 
    
@@ -1379,7 +1393,18 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 2. Devuelve el nombre del departamento con mayor presupuesto y la cantidad que tiene asignada.
 
    ```sql
+   SELECT nombre, presupuesto 
+   FROM departamento
+   WHERE presupuesto = (
+   	SELECT MAX(presupuesto) 
+       FROM departamento
+   );
    
+   +--------+-------------+
+   | nombre | presupuesto |
+   +--------+-------------+
+   | I+D    |      375000 |
+   +--------+-------------+
    ```
 
    
@@ -1387,9 +1412,22 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 3. Devuelve el nombre del departamento con menor presupuesto y la cantidad que tiene asignada.
 
    ```sql
+   SELECT d1.nombre, d1.presupuesto 
+   FROM departamento AS d1
+   WHERE presupuesto < ALL(
+   	SELECT d2.presupuesto 
+       FROM departamento AS d2
+       WHERE d1.presupuesto <> d2.presupuesto
+   );
    
+   +------------+-------------+
+   | nombre     | presupuesto |
+   +------------+-------------+
+   | Proyectos  |           0 |
+   | Publicidad |           0 |
+   +------------+-------------+
    ```
-
+   
    
 
 ***Subconsultas con ALL y ANY***
@@ -1397,7 +1435,19 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 4. Devuelve el nombre del departamento con mayor presupuesto y la cantidad que tiene asignada. Sin hacer uso de MAX, ORDER BY ni LIMIT.
 
    ```sql
+   SELECT d1.nombre, d1.presupuesto 
+   FROM departamento AS d1
+   WHERE presupuesto > ALL(
+   	SELECT d2.presupuesto 
+       FROM departamento AS d2
+       WHERE d1.presupuesto <> d2.presupuesto
+   );
    
+   +--------+-------------+
+   | nombre | presupuesto |
+   +--------+-------------+
+   | I+D    |      375000 |
+   +--------+-------------+
    ```
 
    
@@ -1405,7 +1455,20 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 5. Devuelve el nombre del departamento con menor presupuesto y la cantidad que tiene asignada. Sin hacer uso de MIN, ORDER BY ni LIMIT.
 
    ```sql
+   SELECT d1.nombre, d1.presupuesto 
+   FROM departamento AS d1
+   WHERE presupuesto < ALL(
+   	SELECT d2.presupuesto 
+       FROM departamento AS d2
+       WHERE d1.presupuesto <> d2.presupuesto
+   );
    
+   +------------+-------------+
+   | nombre     | presupuesto |
+   +------------+-------------+
+   | Proyectos  |           0 |
+   | Publicidad |           0 |
+   +------------+-------------+
    ```
 
    
@@ -1413,7 +1476,22 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 6. Devuelve los nombres de los departamentos que tienen empleados asociados. (Utilizando ALL o ANY).
 
    ```sql
+   SELECT nombre 
+   FROM departamento
+   WHERE codigo = ANY (
+   	SELECT codigo_departamento 
+       FROM empleado
+   );
    
+   +------------------+
+   | nombre           |
+   +------------------+
+   | Desarrollo       |
+   | Sistemas         |
+   | Recursos Humanos |
+   | Contabilidad     |
+   | I+D              |
+   +------------------+
    ```
 
    
@@ -1421,9 +1499,22 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 7. Devuelve los nombres de los departamentos que no tienen empleados asociados. (Utilizando ALL o ANY).
 
    ```sql
+   SELECT nombre 
+   FROM departamento
+   WHERE codigo <> ALL (
+   	SELECT codigo_departamento 
+       FROM empleado
+       WHERE codigo_departamento IS NOT NULL
+   );
    
+   +------------+
+   | nombre     |
+   +------------+
+   | Proyectos  |
+   | Publicidad |
+   +------------+
    ```
-
+   
    
 
 ***Subconsultas con IN y NOT IN***
@@ -1431,7 +1522,22 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 8. Devuelve los nombres de los departamentos que tienen empleados asociados. (Utilizando IN o NOT IN).
 
    ```sql
+   SELECT nombre 
+   FROM departamento
+   WHERE codigo IN (
+   	SELECT codigo_departamento 
+       FROM empleado
+   );
    
+   +------------------+
+   | nombre           |
+   +------------------+
+   | Desarrollo       |
+   | Sistemas         |
+   | Recursos Humanos |
+   | Contabilidad     |
+   | I+D              |
+   +------------------+
    ```
 
    
@@ -1439,9 +1545,22 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 9. Devuelve los nombres de los departamentos que no tienen empleados asociados. (Utilizando IN o NOT IN).
 
    ```sql
+   SELECT nombre 
+   FROM departamento
+   WHERE codigo NOT IN (
+   	SELECT codigo_departamento 
+       FROM empleado
+       WHERE codigo_departamento IS NOT NULL 
+   );
    
+   +------------+
+   | nombre     |
+   +------------+
+   | Proyectos  |
+   | Publicidad |
+   +------------+
    ```
-
+   
    
 
 ***Subconsultas con EXISTS y NOT EXISTS***
@@ -1449,7 +1568,23 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 10. Devuelve los nombres de los departamentos que tienen empleados asociados. (Utilizando EXISTS o NOT EXISTS).
 
     ```sql
+    SELECT nombre 
+    FROM departamento AS d
+    WHERE EXISTS (
+    	SELECT d.nombre 
+        FROM empleado AS e
+        WHERE e.codigo_departamento = d.codigo
+    );
     
+    +------------------+
+    | nombre           |
+    +------------------+
+    | Desarrollo       |
+    | Sistemas         |
+    | Recursos Humanos |
+    | Contabilidad     |
+    | I+D              |
+    +------------------+
     ```
 
     
@@ -1457,7 +1592,20 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 11. Devuelve los nombres de los departamentos que no tienen empleados asociados. (Utilizando EXISTS o NOT EXISTS).
 
     ```sql
+    SELECT nombre 
+    FROM departamento AS d
+    WHERE NOT EXISTS (
+    	SELECT d.nombre 
+        FROM empleado AS e
+        WHERE e.codigo_departamento = d.codigo
+    );
     
+    +------------+
+    | nombre     |
+    +------------+
+    | Proyectos  |
+    | Publicidad |
+    +------------+
     ```
-
+    
     
