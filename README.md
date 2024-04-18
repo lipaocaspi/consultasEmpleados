@@ -1054,18 +1054,18 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 2. Devuelve un listado donde sólo aparezcan aquellos empleados que no tienen ningún departamento asociado.
 
    ```sql
-   SELECT e.codigo, e.nif, e.nombre, e.apellido1, e.apellido2
+   SELECT e.codigo, e.nif, e.nombre, e.apellido1, e.apellido2, e.codigo_departamento
    FROM empleado AS e
    LEFT JOIN departamento AS d
    ON e.codigo_departamento = d.codigo
    WHERE e.codigo_departamento IS NULL;
    
-   +--------+-----------+--------------+-----------+-----------+
-   | codigo | nif       | nombre       | apellido1 | apellido2 |
-   +--------+-----------+--------------+-----------+-----------+
-   |     12 | 41234836R | Irene        | Salas     | Flores    |
-   |     13 | 82635162B | Juan Antonio | Sáez      | Guerrero  |
-   +--------+-----------+--------------+-----------+-----------+
+   +--------+-----------+--------------+-----------+-----------+---------------------+
+   | codigo | nif       | nombre       | apellido1 | apellido2 | codigo_departamento |
+   +--------+-----------+--------------+-----------+-----------+---------------------+
+   |     12 | 41234836R | Irene        | Salas     | Flores    |                NULL |
+   |     13 | 82635162B | Juan Antonio | Sáez      | Guerrero  |                NULL |
+   +--------+-----------+--------------+-----------+-----------+---------------------+
    ```
 
    
@@ -1073,18 +1073,18 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 3. Devuelve un listado donde sólo aparezcan aquellos departamentos que no tienen ningún empleado asociado.
 
    ```sql
-   SELECT d.nombre
+   SELECT d.codigo, d.nombre, d.presupuesto, d.gastos
    FROM empleado AS e
    RIGHT JOIN departamento AS d
    ON e.codigo_departamento = d.codigo
    WHERE e.codigo_departamento IS NULL;
    
-   +------------+
-   | nombre     |
-   +------------+
-   | Proyectos  |
-   | Publicidad |
-   +------------+
+   +--------+------------+-------------+--------+
+   | codigo | nombre     | presupuesto | gastos |
+   +--------+------------+-------------+--------+
+   |      6 | Proyectos  |           0 |      0 |
+   |      7 | Publicidad |           0 |   1000 |
+   +--------+------------+-------------+--------+
    ```
 
    
@@ -1159,14 +1159,14 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 1. Calcula la suma del presupuesto de todos los departamentos.
 
    ```sql
-   SELECT SUM(presupuesto)
+   SELECT SUM(presupuesto) AS presupuesto_total
    FROM departamento;
    
-   +------------------+
-   | SUM(presupuesto) |
-   +------------------+
-   |          1035000 |
-   +------------------+
+   +-------------------+
+   | presupuesto_total |
+   +-------------------+
+   |           1035000 |
+   +-------------------+
    ```
 
    
@@ -1174,11 +1174,11 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 2. Calcula la media del presupuesto de todos los departamentos.
 
    ```sql
-   SELECT AVG(presupuesto)
+   SELECT AVG(presupuesto) AS media_presupuesto
    FROM departamento;
    
    +--------------------+
-   | AVG(presupuesto)   |
+   | media_presupuesto  |
    +--------------------+
    | 147857.14285714287 |
    +--------------------+
@@ -1189,14 +1189,14 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 3. Calcula el valor mínimo del presupuesto de todos los departamentos.
 
    ```sql
-   SELECT MIN(presupuesto)
+   SELECT MIN(presupuesto) AS presupuesto_minimo
    FROM departamento;
    
-   +------------------+
-   | MIN(presupuesto) |
-   +------------------+
-   |                0 |
-   +------------------+
+   +--------------------+
+   | presupuesto_minimo |
+   +--------------------+
+   |                  0 |
+   +--------------------+
    ```
 
    
@@ -1221,14 +1221,14 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 5. Calcula el valor máximo del presupuesto de todos los departamentos.
 
    ```sql
-   SELECT MAX(presupuesto)
+   SELECT MAX(presupuesto) AS presupuesto_maximo
    FROM departamento;
    
-   +------------------+
-   | MAX(presupuesto) |
-   +------------------+
-   |           375000 |
-   +------------------+
+   +--------------------+
+   | presupuesto_maximo |
+   +--------------------+
+   |             375000 |
+   +--------------------+
    ```
 
    
@@ -1253,14 +1253,14 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 7. Calcula el número total de empleados que hay en la tabla empleado.
 
    ```sql
-   SELECT COUNT(codigo)
+   SELECT COUNT(codigo) AS numero_empleados
    FROM empleado;
    
-   +---------------+
-   | COUNT(codigo) |
-   +---------------+
-   |            13 |
-   +---------------+
+   +------------------+
+   | numero_empleados |
+   +------------------+
+   |               13 |
+   +------------------+
    ```
 
    
@@ -1268,15 +1268,15 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 8. Calcula el número de empleados que no tienen NULL en su segundo apellido.
 
    ```sql
-   SELECT COUNT(codigo)
+   SELECT COUNT(codigo) AS numero_empleados
    FROM empleado
    WHERE apellido2 IS NOT NULL;
    
-   +---------------+
-   | COUNT(codigo) |
-   +---------------+
-   |            11 |
-   +---------------+
+   +------------------+
+   | numero_empleados |
+   +------------------+
+   |               11 |
+   +------------------+
    ```
 
    
@@ -1284,20 +1284,20 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 9. Calcula el número de empleados que hay en cada departamento. Tienes que devolver dos columnas, una con el nombre del departamento y otra con el número de empleados que tiene asignados.
 
    ```sql
-   SELECT d.nombre, COUNT(e.codigo_departamento) AS numero_de_empleados
+   SELECT d.nombre AS nombre_departamento, COUNT(e.codigo_departamento) AS numero_de_empleados
    FROM departamento AS d, empleado AS e
    WHERE d.codigo = e.codigo_departamento
    GROUP BY e.codigo_departamento;
    
-   +------------------+---------------------+
-   | nombre           | numero_de_empleados |
-   +------------------+---------------------+
-   | Desarrollo       |                   3 |
-   | Sistemas         |                   3 |
-   | Recursos Humanos |                   2 |
-   | Contabilidad     |                   1 |
-   | I+D              |                   2 |
-   +------------------+---------------------+
+   +---------------------+---------------------+
+   | nombre_departamento | numero_de_empleados |
+   +---------------------+---------------------+
+   | Desarrollo          |                   3 |
+   | Sistemas            |                   3 |
+   | Recursos Humanos    |                   2 |
+   | Contabilidad        |                   1 |
+   | I+D                 |                   2 |
+   +---------------------+---------------------+
    ```
 
    
@@ -1305,19 +1305,19 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 10. Calcula el nombre de los departamentos que tienen más de 2 empleados. El resultado debe tener dos columnas, una con el nombre del departamento y otra con el número de empleados que tiene asignados.
 
     ```sql
-    SELECT d.nombre, COUNT(e.codigo_departamento) AS numero_de_empleados
+    SELECT d.nombre AS nombre_departamento, COUNT(e.codigo_departamento) AS numero_de_empleados
     FROM departamento AS d
     JOIN empleado AS e
     ON d.codigo = e.codigo_departamento
     GROUP BY e.codigo_departamento
     HAVING COUNT(e.codigo) > 2;
     
-    +------------+---------------------+
-    | nombre     | numero_de_empleados |
-    +------------+---------------------+
-    | Desarrollo |                   3 |
-    | Sistemas   |                   3 |
-    +------------+---------------------+
+    +---------------------+---------------------+
+    | nombre_departamento | numero_de_empleados |
+    +---------------------+---------------------+
+    | Desarrollo          |                   3 |
+    | Sistemas            |                   3 |
+    +---------------------+---------------------+
     ```
 
     
@@ -1325,23 +1325,23 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 11. Calcula el número de empleados que trabajan en cada uno de los departamentos. El resultado de esta consulta también tiene que incluir aquellos departamentos que no tienen ningún empleado asociado.
 
     ```sql
-    SELECT d.nombre, COUNT(e.codigo_departamento) AS numero_de_empleados
+    SELECT d.nombre AS nombre_departamento, COUNT(e.codigo_departamento) AS numero_de_empleados
     FROM departamento AS d
     LEFT JOIN empleado AS e
     ON d.codigo = e.codigo_departamento
-    GROUP BY d.codigo, d.nombre;
+    GROUP BY d.codigo, nombre_departamento;
     
-    +------------------+---------------------+
-    | nombre           | numero_de_empleados |
-    +------------------+---------------------+
-    | Desarrollo       |                   3 |
-    | Sistemas         |                   3 |
-    | Recursos Humanos |                   2 |
-    | Contabilidad     |                   1 |
-    | I+D              |                   2 |
-    | Proyectos        |                   0 |
-    | Publicidad       |                   0 |
-    +------------------+---------------------+
+    +---------------------+---------------------+
+    | nombre_departamento | numero_de_empleados |
+    +---------------------+---------------------+
+    | Desarrollo          |                   3 |
+    | Sistemas            |                   3 |
+    | Recursos Humanos    |                   2 |
+    | Contabilidad        |                   1 |
+    | I+D                 |                   2 |
+    | Proyectos           |                   0 |
+    | Publicidad          |                   0 |
+    +---------------------+---------------------+
     ```
 
     
@@ -1349,17 +1349,17 @@ VALUES (1, '32481596F', 'Aarón', 'Rivero', 'Gómez', 1),
 12. Calcula el número de empleados que trabajan en cada unos de los departamentos que tienen un presupuesto mayor a 200000 euros.
 
     ```sql
-    SELECT d.nombre, COUNT(e.codigo_departamento) AS numero_de_empleados
+    SELECT d.nombre AS nombre_departamento, COUNT(e.codigo_departamento) AS numero_de_empleados
     FROM departamento AS d, empleado AS e
     WHERE d.codigo = e.codigo_departamento AND d.presupuesto > 200000
     GROUP BY e.codigo_departamento;
     
-    +------------------+---------------------+
-    | nombre           | numero_de_empleados |
-    +------------------+---------------------+
-    | Recursos Humanos |                   2 |
-    | I+D              |                   2 |
-    +------------------+---------------------+
+    +---------------------+---------------------+
+    | nombre_departamento | numero_de_empleados |
+    +---------------------+---------------------+
+    | Recursos Humanos    |                   2 |
+    | I+D                 |                   2 |
+    +---------------------+---------------------+
     ```
 
     
